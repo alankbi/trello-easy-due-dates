@@ -8,20 +8,23 @@ function formatDate(date) {
     return year + '-' + month + '-' + day;
 }
 
-function onShiftForward(t) {
-    return t.card('id', 'due').then(function (value) {
-        var newDate = new Date(value.due.setDate(value.due.getDate() - 1));
-        setNewDate(value.id, newDate);
+function shiftDateBack(date) {
+    var newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 1);
+    return newDate;
+}
+
+function onShiftBack(t) {
+    t.card('id', 'due').then(function (value) {
+        var newDate = shiftDateBack(value.due);
+        setNewDate(t, newDate);
         return Promise.resolve(newDate);
     });
 }
 
-function onShiftBack(t) {
-
-}
-
-function setNewDate(id, date) {
-    var xhr = new XMLHttpRequest();
+function setNewDate(t, date) {
+    t.set('card', 'shared', 'due', formatDate(date));
+    /*var xhr = new XMLHttpRequest();
     xhr.addEventListener('readystatechange', function () {
       if (this.readyState === this.DONE) {
         console.log(this.responseText);
@@ -29,7 +32,7 @@ function setNewDate(id, date) {
     });
     
     xhr.open('PUT', 'https://api.trello.com/1/cards/' + id + '/due/?value=' + formatDate(date));
-    xhr.send();
+    xhr.send();*/
 }
 
 TrelloPowerUp.initialize({
@@ -43,4 +46,8 @@ TrelloPowerUp.initialize({
             callback: onShiftBack(t),
         }];
     },
+}, 
+{
+    appKey: '',
+    appName: 'Easy Due Dates'
 });

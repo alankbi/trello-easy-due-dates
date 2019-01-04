@@ -5,6 +5,9 @@ var mockCardObject = {
         cardObject[str2] = new Date('1/2/19');
         return Promise.resolve(cardObject);
     },
+    set: function (scope, visbility, key, value) {
+        return Promise.resolve();
+    }
 }
 
 function testFormatDate() {
@@ -14,22 +17,24 @@ function testFormatDate() {
     console.log('Expected: 2019-01-12\tActual: ' + result);
 }
 
-function testOnShiftForward() {
-    var result = onShiftForward(mockCardObject);
+function testOnShiftBack() {
+    var result = onShiftBack(mockCardObject);
     result.then(function (value) {
-        console.log('Test onShiftFoward: should shift 1/2/19 forward one day to 1/1/19')
-        console.log('Expected: 1/1/19\tActual: ' + value.toLocaleDateString('en-US'));
+        console.log('Test onShiftBack: should shift 1/2/19 back one day to 1/3/19')
+        console.log('Expected: 1/3/2019\tActual: ' + value.toLocaleDateString('en-US'));
     });
 }
 
-function testOnShiftBack() {
-    
+function testShiftDateBack() {
+    console.log('Test shiftDateBack: should shift 1/2/19 back one day to 1/3/19')
+    var date = new Date('1/2/19');
+    var result = shiftDateBack(date);
+    console.log('Expected: 1/3/2019\tActual: ' + result.toLocaleDateString('en-US'));
 }
-
 
 function runAllTests() {
     console.log('All Tests:');
     testFormatDate();
-    testOnShiftForward();
-    testOnShiftBack();
+    //testOnShiftBack();
+    testShiftDateBack();
 }
