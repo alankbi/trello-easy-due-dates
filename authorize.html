@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Authorize</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/style.css">
+
+        <script src="https://p.trellocdn.com/power-up.min.js"></script>
+    </head>
+    <body>
+        <button type="button">Authorize</button>
+        <script>
+            var t = window.TrelloPowerUp.iframe({
+                appKey: '947bb1a338f0b8679fb6de16422d1b20',
+                appName: 'Easy Due Dates'
+            });
+            t.render(function() {
+                document.querySelector('button').addEventListener('click', function() {
+                    t.getRestApi()
+                    .authorize({ 
+                        scope: { read: 'true', write: 'true' }
+                    })
+                    .then(function(t) {
+                        alert('Success!');
+                    })
+                    .catch(TrelloPowerUp.restApiError.AuthDeniedError, function() {
+                        alert('Cancelled!');
+                    });
+                }, false);
+            });
+        </script>
+    </body>
+</html>

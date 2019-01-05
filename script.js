@@ -1,3 +1,10 @@
+function authorizePowerUp(t) {
+    return t.popup({
+      title: 'Authorize Easy Due Dates',
+      url: './authorize.html'
+    });
+  }
+
 function formatDate(date) {
     var year = date.getFullYear();
     var month = (date.getMonth() + 1).toString();
@@ -17,37 +24,50 @@ function shiftDateBack(date) {
 function onShiftBack(t) {
     t.card('id', 'due').then(function (value) {
         var newDate = shiftDateBack(value.due);
-        setNewDate(t, newDate);
+
+        t.getRestApi().getToken().then(function(token) {
+            setNewDate(token, value.id, new Date('1/15/2019'));
+        });
+
+        //setNewDate(t, newDate);
         return Promise.resolve(newDate);
     });
 }
 
-function setNewDate(t, date) {
-    t.set('card', 'shared', 'due', formatDate(date));
-    /*var xhr = new XMLHttpRequest();
+function setNewDate(token, id, date) {
+    //t.set('card', 'shared', 'due', formatDate(date));
+    var xhr = new XMLHttpRequest();
     xhr.addEventListener('readystatechange', function () {
       if (this.readyState === this.DONE) {
         console.log(this.responseText);
       }
     });
     
-    xhr.open('PUT', 'https://api.trello.com/1/cards/' + id + '/due/?value=' + formatDate(date));
-    xhr.send();*/
+    xhr.open('PUT', 'https://api.trello.com/1/cards/' + id + '/due/?value=' + formatDate(date) +
+        '?key=947bb1a338f0b8679fb6de16422d1b20' + '?token=' + token);
+    xhr.send();
 }
 
 TrelloPowerUp.initialize({
-    'card-buttons': function(t, options){
-        return [{
-            text: 'Shift Deadline Forward',
-            callback: onShiftForward(t),
-        }, 
-        {
-            text: 'Shift Deadline Back',
-            callback: onShiftBack(t),
-        }];
+    'card-buttons': function(t) {
+        return t.getRestApi()
+        .isAuthorized()
+        .then(function (isAuthorized) {
+            if (isAuthorized) {
+                return [{
+                    text: 'Shift Deadline Back',
+                    callback: onShiftBack
+                }];
+            } else {
+                return [{
+                    text: 'Authorize',
+                    callback: authorizePowerUp
+                }];
+            }
+        });
     },
 }, 
 {
-    appKey: '',
+    appKey: '947bb1a338f0b8679fb6de16422d1b20',
     appName: 'Easy Due Dates'
 });
