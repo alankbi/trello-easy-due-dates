@@ -17,9 +17,7 @@
             t.render(function() {
                 document.querySelector('button').addEventListener('click', function() {
                     t.getRestApi()
-                    .authorize({ 
-                        scope: { read: 'true', write: 'true' }
-                    })
+                    .authorize({ scope:'read,write' })
                     .then(function(t) {
                         alert('Success!');
                     })

@@ -10,13 +10,8 @@ var mockCardObject = {
     }
 }
 
-function testFormatDate() {
-    console.log('Test formatDate: should format 1/12/19 to be 2019-01-12')
-    var date = new Date('1/12/19');
-    var result = formatDate(date);
-    console.log('Expected: 2019-01-12\tActual: ' + result);
-}
-
+// Probably worth testing this, initialize, setNewDate, and authorize but
+// not sure how to go about doing that 
 function testOnShiftBack() {
     var result = onShiftBack(mockCardObject);
     result.then(function (value) {
@@ -34,7 +29,5 @@ function testShiftDateBack() {
 
 function runAllTests() {
     console.log('All Tests:');
-    testFormatDate();
-    //testOnShiftBack();
     testShiftDateBack();
 }
