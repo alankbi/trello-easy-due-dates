@@ -3,30 +3,21 @@
     <head>
         <title>Authorize</title>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="/style.css">
+        <link rel="stylesheet" href="./authorize.css">
+        <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css">
 
         <script src="https://p.trellocdn.com/power-up.min.js"></script>
+        <script src="./authorize.js"></script>
     </head>
     <body>
-        <button type="button">Authorize</button>
+        <div class="container">
+            <h4 class="instruction-text">In order to have access to Easy Due Dates' features, 
+                please authorize the Power-Up using the button below:</h4>
+            <h4 class="success-text">Success! You may exit this window.</h4>
+            <button class="authorization-button" type="button">Authorize</button>
+        </div>
         <script>
-            var t = window.TrelloPowerUp.iframe({
-                appKey: '947bb1a338f0b8679fb6de16422d1b20',
-                appName: 'Easy Due Dates'
-            });
-            t.render(function () {
-                document.querySelector('button').addEventListener('click', function () {
-                    t.getRestApi()
-                    .authorize({ scope:'read,write' })
-                    .then(function (t) {
-                        console.log('Success');
-                        // TODO: add prompt to close this window
-                    })
-                    .catch(TrelloPowerUp.restApiError.AuthDeniedError, function () {
-                        console.log('Denied');
-                    });
-                }, false);
-            });
+            
         </script>
     </body>
 </html>

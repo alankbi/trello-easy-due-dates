@@ -2,7 +2,7 @@ var apiKey = '947bb1a338f0b8679fb6de16422d1b20';
 var AUTH_OPTS = {
     title: 'Authorize Easy Due Dates',
     url: './authorize.html',
-    height: 800, 
+    height: 200, 
     fullscreen: false,
     accentColor: '#0079BF'
 };
