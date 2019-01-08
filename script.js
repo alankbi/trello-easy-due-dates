@@ -1,11 +1,11 @@
 var apiKey = '947bb1a338f0b8679fb6de16422d1b20';
-
-function authorizePowerUp(t) {
-    return t.popup({
-      title: 'Authorize Easy Due Dates',
-      url: './authorize.html'
-    });
-  }
+var AUTH_OPTS = {
+    title: 'Authorize Easy Due Dates',
+    url: './authorize.html',
+    height: 800, 
+    fullscreen: false,
+    accentColor: '#0079BF'
+};
 
 function shiftDateBack(date) {
     var newDate = new Date(date);
@@ -39,23 +39,32 @@ function setNewDate(token, id, date) {
 }
 
 TrelloPowerUp.initialize({
-    'card-buttons': function(t) {
-        return t.getRestApi()
-        .isAuthorized()
-        .then(function (isAuthorized) {
-            if (isAuthorized) {
+    'authorization-status': function (t) {
+        return t.getRestApi().isAuthorized().then(function (isAuthorized) {
+            return { authorized: isAuthorized };
+        });
+    },
+    'card-buttons': function (t) {
+        return t.getRestApi().isAuthorized().then(function (authorized) {
+            if (authorized) { 
                 return [{
                     text: 'Shift Deadline Back',
                     callback: onShiftBack
                 }];
             } else {
                 return [{
-                    text: 'Authorize',
-                    callback: authorizePowerUp
+                    text: 'Authorize Power-Up',
+                    callback: function (t) { return t.modal(AUTH_OPTS); }
                 }];
             }
         });
     },
+    'on-enable': function (t) {
+        return t.modal(AUTH_OPTS);
+    },
+    'show-authorization': function (t) {
+        return t.modal(AUTH_OPTS);
+    }
 }, 
 {
     appKey: apiKey,

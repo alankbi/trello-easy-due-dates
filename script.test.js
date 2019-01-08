@@ -10,7 +10,7 @@ var mockCardObject = {
     }
 }
 
-// Probably worth testing this, initialize, setNewDate, and authorize but
+// Probably worth testing this, initialize and setNewDate but
 // not sure how to go about doing that 
 function testOnShiftBack() {
     var result = onShiftBack(mockCardObject);
